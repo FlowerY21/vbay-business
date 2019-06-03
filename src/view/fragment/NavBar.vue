@@ -40,88 +40,12 @@
             return{
                 navsBar:[{
                     index:'1',
-                    navName:'机构管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/organmanage',
-                        navsSecondName:'机构管理',
-                        routerName:'organmanage',
-                    },{
-                        index:'/index/organuser',
-                        navsSecondName:'机构用户管理',
-                        routerName:'organuser',
-                    },{
-                        index:'/index/organrate',
-                        navsSecondName:'机构费率管理',
-                        routerName:'organrate',
-                    },{
-                        index:'/index/organnote',
-                        navsSecondName:'机构短信管理',
-                        routerName:'organnote',
-                    },{
-                        index:'/index/organcertification',
-                        navsSecondName:'机构实名认证管理',
-                        routerName:'organcertification',
-                    }]
-                },{
-                    index:'2',
                     navName:'通道管理',
                     navLogo:'',
                     navsSecond:[{
-                        index:'/index/channelpay',
-                        navsSecondName:'支付通道管理',
-                        routerName:'channelpay',
-                    },{
-                        index:'/index/channelrate',
-                        navsSecondName:'支付费率管理',
-                        routerName:'channelrate',
-                    },{
-                        index:'/index/channelmerchant',
-                        navsSecondName:'通道子商户管理',
-                        routerName:'channelmerchant',
-                    },{
-                        index:'/index/channelnote',
-                        navsSecondName:'短信通道管理',
-                        routerName:'channelnote',
-                    },{
-                        index:'/index/channelcertification',
-                        navsSecondName:'认证通道管理',
-                        routerName:'channelcertification',
-                    }]
-                },{
-                    index:'5',
-                    navName:'机构管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/dailystatistics',
-                        navsSecondName:'按日统计',
-                        routerName: 'dailystatistics',
-                    }]
-                },{
-                    index:'6',
-                    navName:'系统管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/dictionarymanage',
-                        navsSecondName:'字典管理',
-                        routerName: 'dictionarymanage',
-                    }]
-                },{
-                    index:'7',
-                    navName:'权限管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/usermanage',
-                        navsSecondName:'用户管理',
-                        routerName: 'usermanage',
-                    },{
-                        index:'/index/rolemanage',
-                        navsSecondName:'角色管理',
-                        routerName: 'rolemanage',
-                    },{
-                        index:'/index/menumanage',
-                        navsSecondName:'菜单管理',
-                        routerName: 'menumanage',
+                        index:'/index/channelmanage',
+                        navsSecondName:'通道管理',
+                        routerName:'channelmanage',
                     }]
                 }]
             }
