@@ -149,7 +149,7 @@
                 }
                 this.doLoad(PowerUserService.selectperms, params, res => {
                     const result = JSON.parse(res.contents);
-                    // console.log(result)
+                    console.log(result)
                     // this.navsBar = result
                 }, '信息获取失败')
             }

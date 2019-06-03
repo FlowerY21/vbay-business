@@ -5,7 +5,7 @@
                    :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
             <el-table-column prop="permName" label="菜单名称"></el-table-column>
             <el-table-column prop="userName" label="图标"></el-table-column>
-            <el-table-column prop="permPath" label="菜单路径"></el-table-column>
+            <el-table-column prop="index" label="菜单路径"></el-table-column>
             <el-table-column prop="menuType" label="类型">
                 <template slot-scope="scope">
                     <p v-if="scope.row.menuType == 0">目录</p>
@@ -100,6 +100,7 @@
         },
         mounted() {
             this.getList();
+            this.getPerms();
         },
         mixins: [loadMixin, dialogMixin, validatorsMixin],
         data() {
@@ -145,7 +146,7 @@
                 filterText: '',
                 checkedIdArr: [],
                 defaultCheckedArr: [],
-                parentId:'',
+                parentId:'0',
             }
         },
         computed: {
@@ -168,7 +169,13 @@
                     creatorId: this.userInfo.modifierId,
                 };
                 if (this.powerId) {
+                    delete params.creatorId;
                     params.id = this.powerId;
+                    params.parentId = this.dialogModel.parentId;
+                    params.modifierId = this.userInfo.modifierId;
+                }
+                if(this.dialogModel.remark == '' || this.dialogModel.remark == undefined){
+                    delete params.remark;
                 }
                 return params;
             },
@@ -188,15 +195,58 @@
                     this.tableData = result;
                 }, '信息获取失败')
             },
+            updateInfo(id) {
+                this.dialogServiceType = false;
+                this.powerId = id;
+                this.getDetail();
+                this.formDialogTitle = '修改菜单';
+                this.$refs.formDialog.open();
+            },
+            getDetail(){
+                const params = {
+                    id:this.powerId
+                };
+                this.doLoad(PowerInfoService.selectone, params, res => {
+                    const result = JSON.parse(res.contents);
+                    this.dialogModel = result;
+                    this.dialogModel.permType = this.dialogModel.permType.toString();
+                    this.dialogModel.permStatus = this.dialogModel.permStatus.toString();
+                    this.traverseTree(this.perms);
+                    if (this.dialogModel.remark == 'undefined') {
+                        this.dialogModel.remark == '';
+                    }
+                }, '信息获取失败')
+            },
+            traverseTree(node){
+                if (!node) {
+                    return;
+                }
+
+                for(let i=0;i<node.length;i++){
+                    if (node[i].children && node[i].children.length > 0) {
+                        if(node[i].id == this.dialogModel.parentId){
+                            this.dialogModel.permList = node[i].permName;
+                        }
+                        for (let a = 0; a < node[i].children.length; a++) {
+                            if(node[i].children[a].id == this.dialogModel.parentId){
+                                this.dialogModel.permList = node[i].children[a].permName;
+                            }
+                            this.traverseTree(node[i].children[a]);
+                        }
+                    }else{
+                        if(node[i].id == this.dialogModel.parentId){
+                            this.dialogModel.permList = node[i].permName;
+                        }
+                    }
+                }
+            },
             choosePerm() {
-                this.getPerms();
                 this.showPower = false;
             },
             getPerms() {
                 this.doLoad(PowerInfoService.list, '', res => {
                     const result = JSON.parse(res.contents);
                     this.perms = result;
-                    // console.log('perms',this.perms)
                 }, '信息获取失败')
             },
             Delete(id) {
@@ -220,9 +270,9 @@
                 if(checked == true){
                     this.checkedId = data.id;
                     this.$refs.tree.setCheckedNodes([data]);
-                    if (data.parentId) {
-                        this.defaultCheckedArr.push(data.parentId);
-                        this.parentId = data.parentId;
+                    if (data.id) {
+                        this.defaultCheckedArr.push(data.id);
+                        this.parentId = data.id;
                     } else {
                         this.defaultCheckedArr.push(data.id);
                         this.parentId = 0;
@@ -257,7 +307,7 @@
                 this.showPower = true;
             },
             dialogOpen() {
-
+                this.getPerms();
             },
         }
     }
