@@ -46,7 +46,16 @@
                         index:'/index/channelmanage',
                         navsSecondName:'通道管理',
                         routerName:'channelmanage',
-                    }]
+                    },]
+                },{
+                    index:'2',
+                    navName:'计划管理',
+                    navLogo:'',
+                    navsSecond:[{
+                        index:'/index/planselect',
+                        navsSecondName:'计划查询',
+                        routerName:'planselect',
+                    },]
                 }]
             }
         },

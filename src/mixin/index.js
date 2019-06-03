@@ -5,6 +5,7 @@ import StorageService from 'store/interfaces';
 import Account from "../service/model/Account";
 import SubmitText from "./model/SubmitText";
 import privateKey from 'service/constant/privateKey'
+import SystemDicService from 'service/SystemDicService'
 import {encrypt, urlEncode, objKeySort} from "common/js/common-utils";
 
 let loading;
@@ -174,8 +175,40 @@ const loadMethods = Object.assign({}, dialogMethods, {
             // this.showError(res.resMsg)
         }
     },
+    getTypeNames(typeName,onSuccess){
+        const params = {
+            serverType:this.serverType,
+            tatId:this.tatId,
+            typeName:typeName,
+            userId:this.userId,
+            reqTime: new Date().format("yyyy-MM-dd HH:mm:ss")
+        };
+        params.sign = encrypt(urlEncode(objKeySort(params)) + '&priKey=' + privateKey.priKey);
 
+        this.doLoad(SystemDicService.bytype,params,res => {
+            this.doCheck(res,res =>{
+                const result = JSON.parse(res.contents);
+                onSuccess && onSuccess(result);
+            });
+        },'信息获取失败')
+    },
+    doCheckUnique(typeName,onSuccess){
+        const params = {
+            serverType:this.serverType,
+            tatId:this.tatId,
+            typeName:typeName,
+            userId:this.userId,
+            reqTime: new Date().format("yyyy-MM-dd HH:mm:ss")
+        };
+        params.sign = encrypt(urlEncode(objKeySort(params)) + '&priKey=' + privateKey.priKey);
 
+        this.doLoad(SystemDicService.bytype,params,res => {
+            this.doCheck(res,res =>{
+                const result = JSON.parse(res.contents);
+                onSuccess && onSuccess(result);
+            });
+        },'信息获取失败')
+    }
 
 });
 

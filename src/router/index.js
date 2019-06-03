@@ -26,6 +26,19 @@ const ChannelManage = (resolve) => {
     })
 };
 
+const ChangeChannelManage = (resolve) => {
+    import('@/view/page/ChannelManage/ChangeChannelManage').then((module) => {
+        resolve(module);
+    })
+};
+
+// 计划管理
+const PlanSelect = (resolve) => {
+    import('@/view/page/PlanManage/PlanSelect').then((module) => {
+        resolve(module);
+    })
+};
+
 
 Vue.use(Router);
 export default new Router({
@@ -54,6 +67,14 @@ export default new Router({
                     path:'channelmanage',
                     name:'channelmanage',
                     component:ChannelManage
+                },{
+                    path:'changechannelmanage',
+                    name:'changechannelmanage',
+                    component:ChangeChannelManage
+                },{
+                    path:'planselect',
+                    name:'planselect',
+                    component:PlanSelect
                 },
 
             ]
