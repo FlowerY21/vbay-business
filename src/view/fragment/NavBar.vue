@@ -28,7 +28,7 @@
 
 <script>
 
-    import PowerUserService from 'service/PowerUserService'
+    // import PowerUserService from 'service/PowerUserService'
 
     import {encrypt, urlEncode, objKeySort} from "common/js/common-utils";
     import {loadMixin, dialogMixin, validatorsMixin} from "mixin";
@@ -71,11 +71,11 @@
                 const params = {
                     id : this.userInfo.id
                 }
-                this.doLoad(PowerUserService.selectperms, params, res => {
-                    const result = JSON.parse(res.contents);
-                    console.log(result)
-                    // this.navsBar = result
-                }, '信息获取失败')
+                // this.doLoad(PowerUserService.selectperms, params, res => {
+                //     const result = JSON.parse(res.contents);
+                //     console.log(result)
+                //     // this.navsBar = result
+                // }, '信息获取失败')
             }
         }
     }
