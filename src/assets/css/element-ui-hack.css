@@ -1,0 +1,175 @@
+/*登录页表单*/
+.login_form .el-form-item {
+    margin-bottom: 30px;
+}
+
+.login_form .el-form-item:last-child {
+    margin-bottom: 50px;
+}
+
+.login_form .el-form-item .el-input__inner {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid #E6E6E6;
+    padding-left: 0;
+}
+
+/*按钮间距*/
+.el-button + .el-button {
+    margin-left: 20px;
+}
+
+/*表格*/
+.el-table td, .el-table th {
+    text-align: center;
+}
+
+.el-table .colorOne, .el-table th {
+    background: #F9F9F9;
+}
+
+.el-table .colorTwo {
+    background: rgba(7, 154, 222, 0.06);
+}
+
+.el-form-item__content {
+    margin-left: 0 !important;
+}
+
+.over .el-form-item__content {
+    width: 100%;
+}
+
+.note .el-form-item__content {
+    width: calc(100% - 90px);
+}
+
+.note .el-form-item__content .el-input {
+    width: 91%;
+    margin-right: 2%;
+}
+
+.el-select {
+    width: 100%;
+}
+
+.chooseArea .el-select {
+    margin-right: 20px;
+}
+
+.el-row {
+    display: flex;
+}
+
+.el-dialog {
+    width: 450px;
+}
+
+.el-dialog__footer {
+    padding-top: 20px;
+    background: rgba(249, 249, 249, 1);
+}
+
+.dialog .el-form-item {
+    display: flex;
+    margin-right: 20px;
+}
+
+.dialog .el-range-editor.el-input__inner{
+    width: 100%;
+}
+
+/*滚动条的父级更改样式*/
+.commonTable.el-table {
+    overflow: auto;
+}
+
+/*滚动条以及内容还有合计的行样式更改*/
+.commonTable .el-table__body-wrapper,
+.commonTable .el-table__header-wrapper,
+.commonTable .el-table__footer-wrapper {
+    overflow: visible;
+}
+
+/*这个样式写完之后会产生一条横线,需要覆盖外表格的伪类after,注意要全局样式去覆盖,不要写在scoped中,外层也不能包裹父类*/
+.commonTable.el-table::after {
+    position: relative !important;
+}
+
+.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+    border-color: #dcdfe6;
+}
+
+.el-card__body{
+    padding: 30px;
+}
+
+.note .el-input-number .el-input{
+    width: 100%;
+}
+
+.el-tabs__nav-scroll{
+    margin: 30px;
+    /*padding: 0px 30px;*/
+    background: #FFFFFF;
+    box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    border-radius:4px;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+.el-tabs--card>.el-tabs__header .el-tabs__nav,
+.el-tabs--card>.el-tabs__header .el-tabs__item,
+.el-tabs--card>.el-tabs__header{
+    margin: 0;
+    border: none;
+}
+.el-tabs__nav-scroll{
+    margin-bottom: 0;
+}
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
+    position: relative;
+}
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active.is-closable::after{
+    content: '';
+    width: calc(100% - 80px);
+    height: 4px;
+    background: rgba(7, 154, 222, 1);
+    bottom: 0;
+    right: 49px;
+    margin: auto;
+    position: absolute;
+}
+.el-tabs__item{
+    padding: 0 30px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.el-tabs--card>.el-tabs__header .el-tabs__item:first-child .el-icon-close{
+    visibility: hidden;
+    width: 14px;
+}
+.el-tabs--card>.el-tabs__header .el-tabs__item:first-child{
+    transition:none;
+}
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-closable:first-child:hover,
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active.is-closable{
+    padding: 0 30px;
+}
+.el-main{
+    min-width:calc(1200px - 250px) ;
+}
+.wrapper{
+    min-width: 1200px;
+}
+.el-date-editor .el-range-separator{
+    width: 10%;
+}
+.el-menu-item.is-active::after{
+    content:'';
+    width: 4px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    background: rgba(7, 154, 222, 1);
+}
