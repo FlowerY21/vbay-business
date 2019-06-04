@@ -44,7 +44,19 @@ const OrganApi = {
 
 };
 
+//  系统管理——字典管理 相关API接口地址
+const SystemDicApi = {
+    List: '/sysdict/list',
+    Add: '/sysdict/add',
+    Detail: '/sysdict/detail',
+    CheckUnique: '/sysdict/checkUnique', //  唯一键查询
+    Update: '/sysdict/edit',
+    DpStatus: '/sysdict/udpStatus',
+    ByType: '/sysdict/getByType',        //根据类型查询
+};
 
 
 
-export {UserApi, ChannelRateApi,OrganRateApi,ChannelApi,OrganApi};
+
+
+export {UserApi, ChannelRateApi,OrganRateApi,ChannelApi,OrganApi,SystemDicApi};

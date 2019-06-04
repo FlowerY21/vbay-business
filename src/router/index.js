@@ -32,9 +32,28 @@ const ChangeChannelManage = (resolve) => {
     })
 };
 
+const OtherRate = (resolve) => {
+    import('@/view/page/ChannelManage/OtherRate').then((module) => {
+        resolve(module);
+    })
+};
+
 // 计划管理
 const PlanSelect = (resolve) => {
     import('@/view/page/PlanManage/PlanSelect').then((module) => {
+        resolve(module);
+    })
+};
+
+const PlanDetails = (resolve) => {
+    import('@/view/page/PlanManage/PlanDetails').then((module) => {
+        resolve(module);
+    })
+};
+
+// 快捷收款管理
+const QuickCollectionSelect = (resolve) => {
+    import('@/view/page/QuickCollectionManage/QuickCollectionSelect').then((module) => {
         resolve(module);
     })
 };
@@ -72,9 +91,21 @@ export default new Router({
                     name:'changechannelmanage',
                     component:ChangeChannelManage
                 },{
+                    path:'otherrate',
+                    name:'otherrate',
+                    component:OtherRate
+                },{
                     path:'planselect',
                     name:'planselect',
                     component:PlanSelect
+                },{
+                    path:'plandetails/:id',
+                    name:'plandetails',
+                    component:PlanDetails
+                },{
+                    path:'quickcollectionselect',
+                    name:'quickcollectionselect',
+                    component:QuickCollectionSelect
                 },
 
             ]

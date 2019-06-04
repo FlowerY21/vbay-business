@@ -14,13 +14,6 @@
                     </template>
                     <el-menu-item :index="nav.index"  v-for = "(nav,second) in navs.navsSecond" :key = "second" @click="goTo(nav.navsSecondName,nav.routerName)">{{nav.navsSecondName}}</el-menu-item>
                 </el-submenu>
-                <!--<el-submenu :index="navs.index" v-for = "(navs,first) in navsBar" :key = "first">-->
-                    <!--<template slot="title">-->
-                        <!--<i class="el-icon-location"></i>-->
-                        <!--<span>{{navs.permName}}</span>-->
-                    <!--</template>-->
-                    <!--<el-menu-item :index="nav.index"  v-for = "(nav,second) in navs.children" :key = "second" @click="goTo(nav.permName,nav.routerName)">{{nav.permName}}</el-menu-item>-->
-                <!--</el-submenu>-->
             </el-menu>
         </div>
     </div>
@@ -55,6 +48,15 @@
                         index:'/index/planselect',
                         navsSecondName:'计划查询',
                         routerName:'planselect',
+                    },]
+                },{
+                    index:'3',
+                    navName:'快捷收款管理',
+                    navLogo:'',
+                    navsSecond:[{
+                        index:'/index/quickcollectionselect',
+                        navsSecondName:'快捷收款查询',
+                        routerName:'quickcollectionselect',
                     },]
                 }]
             }
