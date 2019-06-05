@@ -208,12 +208,12 @@
             },
             addInfo() {
                 this.$router.push({
-                    name:'addorganrate'
+                    name:'addchannelmanage'
                 })
             },
             updateInfo(id) {
                 this.$router.push({
-                    name:'updateorganrate',
+                    name:'updatechannelmanage',
                     params:{
                         id:id,
                     }

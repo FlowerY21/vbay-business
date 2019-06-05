@@ -13,6 +13,9 @@ const mutations = {
     [StorageService.Device.set](state, device) {
         state.device = device;
     },
+    [StorageService.TabBar.setTabBar](state, tabBar) {
+        state.tabBar = tabBar;
+    },
 };
 
 export default mutations;

@@ -6,4 +6,6 @@ export const loginInfo = state => state.loginInfo;
 
 export const device = state => state.device;
 
+export const tabBar = state => state.tabBar;
+
 

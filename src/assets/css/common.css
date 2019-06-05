@@ -31,6 +31,9 @@
 .flow-justify {
     justify-content: space-between;
 }
+.around-justify {
+    justify-content: space-around;
+}
 
 .color-light {
     color: white;
@@ -115,3 +118,11 @@ h1{
 .commonMargin{
     margin-right: 20px;
 }
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
+}
+.clearfix:after{display:block;clear:both;content:"";visibility:hidden;height:0}
+.clearfix{zoom:1}

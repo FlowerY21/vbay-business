@@ -9,6 +9,9 @@ export default {
     Device: {
         set: 'SET_DEVICE',
     },
+    TabBar: {
+        setTabBar: 'SET_TAB_BAR',
+    },
     Page: {
         next: 'SET_NEXT',
         setFrom: 'SET_FROM',

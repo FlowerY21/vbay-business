@@ -117,6 +117,16 @@
     box-sizing: border-box;
     overflow-x: auto;
 }
+.member .el-tabs__nav-scroll{
+    margin: 0;
+    padding: 0;
+}
+.member .el-tabs__active-bar{
+    background-color:rgba(7, 154, 222, 1);
+}
+.member .el-tabs__item{
+    padding: 0 20px;
+}
 .el-tabs--card>.el-tabs__header .el-tabs__nav,
 .el-tabs--card>.el-tabs__header .el-tabs__item,
 .el-tabs--card>.el-tabs__header{

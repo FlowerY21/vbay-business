@@ -71,12 +71,16 @@
             labelWidth:{
                 type:String,
                 default:''
+            },
+            SubmitButton:{
+                type:Boolean,
+                default:false,
             }
         },
         data() {
             return {
                 validMap: {},
-                canSubmit: false
+                canSubmit: this.SubmitButton
             }
         },
         mounted() {

@@ -5,7 +5,8 @@
             <nav-bar @addTab="addTab"></nav-bar>
             <el-main class="main">
                 <div class="content">
-                    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" @tab-click="clickTab">
+                    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab"
+                             @tab-click="clickTab">
                         <el-tab-pane
                             v-for="(item, index) in editableTabs"
                             :key="item.name"
@@ -14,7 +15,7 @@
 
                         >
                             <!--<keep-alive>-->
-                                <router-view v-if="isRouterAlive"/>
+                            <router-view v-if="isRouterAlive"/>
                             <!--</keep-alive>-->
                         </el-tab-pane>
                     </el-tabs>
@@ -29,32 +30,44 @@
     import Top from '../fragment/Top'
     import NavBar from '../fragment/NavBar'
     import ElContainer from "element-ui/packages/container/src/main";
+
+    import StorageService from 'store/interfaces';
+    import {mapActions, mapGetters} from 'vuex';
+
     export default {
         name: "index",
         components: {
             ElContainer,
-            Top,NavBar
+            Top, NavBar
         },
-        provide () {
+        provide() {
             return {
                 reload: this.reload
             }
         },
-        data () {
+        data() {
             return {
                 isRouterAlive: true,
-                editableTabsValue:'1',
-                routerIndex:'',
+                editableTabsValue: '1',
+                routerIndex: '',
                 editableTabs: [{
                     title: '首页',
                     name: '1',
-                    routerName: 'Welcome'
+                    routerPath: 'Welcome'
                 }],
-                tabIndex: 2,
+                tabIndex: 1,
+                tabBarObj: {},
             }
         },
-        mounted(){
+        mounted() {
+            if (this.tabBar.editableTabsValue) {
+                this.editableTabs = this.tabBar.editableTabs;
+                this.editableTabsValue = this.tabBar.editableTabsValue;
+            }
 
+        },
+        computed: {
+            ...mapGetters(['tabBar'])
         },
         methods: {
             /**
@@ -62,32 +75,41 @@
              *  刷新当前显示的组件
              *  参考：https://juejin.im/entry/5b5ac53c5188251abb46c250
              * */
-            reload () {
+            reload() {
                 this.isRouterAlive = false;
                 this.$nextTick(() => {
                     this.isRouterAlive = true;
                 })
             },
-            addTab(targetName,routerName) {
-                for (let i=0;i<this.editableTabs.length;i++) {
-                    if (targetName == this.editableTabs[i].title) {
-                        this.editableTabsValue =  this.editableTabs[i].name;
-                       return;
+            addTab(targetName, routerPath) {
+                let newTabName = ++this.tabIndex + '';
+                for (let i = 0; i < this.editableTabs.length; i++) {
+                    if(newTabName == this.editableTabs[i].name){
+                        newTabName = newTabName + 1;
                     }
+                    if (targetName == this.editableTabs[i].title) {
+                        this.editableTabsValue = this.editableTabs[i].name;
+                        return;
+                    }
+
                 }
 
-                let newTabName = ++this.tabIndex + '';
                 this.editableTabs.push({
                     title: targetName,
                     name: newTabName,
-                    routerName: routerName
+                    routerPath: routerPath
                 });
                 this.editableTabsValue = newTabName;
+
+                this.tabBarObj.editableTabsValue = this.editableTabsValue;
+                this.tabBarObj.editableTabs = this.editableTabs;
+                this.setTabBar(this.tabBarObj);
             },
             removeTab(targetName) {
+
+
                 let tabs = this.editableTabs;
                 let activeName = this.editableTabsValue;
-
 
                 if (targetName == 1) {
                     return;
@@ -108,27 +130,41 @@
                 this.editableTabsValue = activeName;
                 this.editableTabs = tabs.filter(tab => tab.name !== targetName);
 
-                for(let i=0;i<tabs.length;i++){
+                for (let i = 0; i < tabs.length; i++) {
                     if (this.editableTabsValue == tabs[i].name) {
                         this.$router.replace({
-                            name:tabs[i].routerName
+                            // name:tabs[i].routerName
+                            path: tabs[i].routerPath
                         })
                     }
                 }
 
+                this.tabBarObj.editableTabsValue = this.editableTabsValue;
+                this.tabBarObj.editableTabs = this.editableTabs;
+                this.setTabBar(this.tabBarObj);
             },
-            clickTab(data){
-                console.log(data)
+            clickTab(data) {
                 let tabs = this.editableTabs;
                 let tabsName = data.label;
                 tabs.forEach((tab, index) => {
-                    if(tab.title == tabsName){
+                    if (tab.title == tabsName) {
                         this.$router.replace({
-                            name:tab.routerName
+                            // name:tab.routerName
+                            path: tab.routerPath
                         })
                     }
                 });
-            }
+
+                console.log('data',data);
+
+
+                this.tabBarObj.editableTabsValue = data.name;
+                this.tabBarObj.editableTabs = this.editableTabs;
+                this.setTabBar(this.tabBarObj);
+            },
+            ...mapActions({
+                setTabBar: StorageService.TabBar.setTabBar,
+            })
         }
 
 
@@ -143,12 +179,14 @@
         padding: 1px 3px;
         width: 100%;
     }
+
     .main {
         flex: 1;
         background: #f9f9f9;
         overflow: hidden;
         position: relative;
     }
+
     .content {
         position: absolute;
         top: 0;

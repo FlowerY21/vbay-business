@@ -58,6 +58,30 @@ const QuickCollectionSelect = (resolve) => {
     })
 };
 
+// 系统管理
+const BillReminder = (resolve) => {
+    import('@/view/page/SystemManage/BillReminder').then((module) => {
+        resolve(module);
+    })
+};
+
+// 会员管理
+const MemberBasicInfo = (resolve) => {
+    import('@/view/page/MemberManage/MemberBasicInfo').then((module) => {
+        resolve(module);
+    })
+};
+const BasicInfo = (resolve) => {
+    import('@/view/fragment/MemberManage/BasicInfo').then((module) => {
+        resolve(module);
+    })
+};
+const FundsDetail = (resolve) => {
+    import('@/view/fragment/MemberManage/FundsDetail').then((module) => {
+        resolve(module);
+    })
+};
+
 
 Vue.use(Router);
 export default new Router({
@@ -87,8 +111,12 @@ export default new Router({
                     name:'channelmanage',
                     component:ChannelManage
                 },{
-                    path:'changechannelmanage',
-                    name:'changechannelmanage',
+                    path:'addchannelmanage',
+                    name:'addchannelmanage',
+                    component:ChangeChannelManage
+                },{
+                    path:'updatechannelmanage/:id',
+                    name:'updatechannelmanage',
                     component:ChangeChannelManage
                 },{
                     path:'otherrate',
@@ -106,6 +134,24 @@ export default new Router({
                     path:'quickcollectionselect',
                     name:'quickcollectionselect',
                     component:QuickCollectionSelect
+                },{
+                    path:'billreminder',
+                    name:'billreminder',
+                    component:BillReminder
+                },{
+                    path:'memberbasicinfo',
+                    name:'memberbasicinfo',
+                    component:MemberBasicInfo,
+                    redirect:'memberbasicinfo/basicinfo',
+                    children:[{
+                        path:'basicinfo',
+                        name:'basicinfo',
+                        component:BasicInfo
+                    },{
+                        path:'fundsdetail',
+                        name:'fundsdetail',
+                        component:FundsDetail
+                    },]
                 },
 
             ]

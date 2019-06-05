@@ -39,7 +39,11 @@
                         index:'/index/channelmanage',
                         navsSecondName:'通道管理',
                         routerName:'channelmanage',
-                    },]
+                    },{
+                        index:'/index/otherrate',
+                        navsSecondName:'其他费率说明',
+                        routerName:'otherrate',
+                    }]
                 },{
                     index:'2',
                     navName:'计划管理',
@@ -58,6 +62,24 @@
                         navsSecondName:'快捷收款查询',
                         routerName:'quickcollectionselect',
                     },]
+                },{
+                    index:'4',
+                    navName:'系统管理',
+                    navLogo:'',
+                    navsSecond:[{
+                        index:'/index/billreminder',
+                        navsSecondName:'账单提醒配置',
+                        routerName:'billreminder',
+                    },]
+                },{
+                    index:'5',
+                    navName:'会员管理',
+                    navLogo:'',
+                    navsSecond:[{
+                        index:'/index/memberbasicinfo',
+                        navsSecondName:'会员基本信息',
+                        routerName:'memberbasicinfo',
+                    },]
                 }]
             }
         },
@@ -69,8 +91,8 @@
             this.getSelectPerms();
         },
         methods: {
-            goTo(navsSecondName,routerName){
-                this.$emit('addTab',navsSecondName,routerName);
+            goTo(navsSecondName,routerPath){
+                this.$emit('addTab',navsSecondName,routerPath);
             },
             handleOpen(key, keyPath) {
                 // console.log(key, keyPath);

@@ -6,6 +6,7 @@ const Keys = {
     UserToken: '__t__',
     Device: '__d__',
     Account: '__a__',
+    TabBar: '__b__',
 };
 
 const loadUserInfo = () => {
@@ -48,6 +49,16 @@ const saveDevice = (device) => {
     storage.session.set(Keys.Device, device)
     return device;
 };
+
+const loadTabBar = () => {
+    return storage.session.get(Keys.TabBar, {});
+};
+
+const saveTabBar = (tabBar) => {
+    storage.session.set(Keys.TabBar, tabBar);
+    return tabBar;
+};
+
 export default {
     loadUserInfo,
     saveUserInfo,
@@ -57,4 +68,6 @@ export default {
     saveAccount,
     loadDevice,
     saveDevice,
+    loadTabBar,
+    saveTabBar,
 }

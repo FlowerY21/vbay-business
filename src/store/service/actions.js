@@ -14,5 +14,7 @@ export default {
     [StorageService.Device.set]({commit}, device) {
         commit(StorageService.Device.set, LocalStorageDao.saveDevice(device));
     },
-
+    [StorageService.TabBar.setTabBar]({commit}, tabBar) {
+        commit(StorageService.TabBar.setTabBar, LocalStorageDao.saveTabBar(tabBar));
+    },
 }
