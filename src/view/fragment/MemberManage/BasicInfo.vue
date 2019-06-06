@@ -31,9 +31,6 @@
 </script>
 
 <style scoped>
-    .basicInfo{
-        padding-top: 20px;
-    }
     .basicInfo div{
         margin-right: 120px;
     }
@@ -42,6 +39,9 @@
         color: #000;
         font-weight: bold;
         margin-bottom: 50px;
+    }
+    .basicInfo p:last-child{
+        margin-bottom: 0;
     }
     .basicInfo p span{
         font-weight: normal;

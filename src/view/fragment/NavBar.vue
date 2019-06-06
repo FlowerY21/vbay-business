@@ -80,6 +80,15 @@
                         navsSecondName:'会员基本信息',
                         routerName:'memberbasicinfo',
                     },]
+                },{
+                    index:'6',
+                    navName:'信创学院',
+                    navLogo:'',
+                    navsSecond:[{
+                        index:'/index/articalmanage',
+                        navsSecondName:'文章管理',
+                        routerName:'articalmanage',
+                    },]
                 }]
             }
         },

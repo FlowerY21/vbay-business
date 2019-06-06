@@ -81,6 +81,43 @@ const FundsDetail = (resolve) => {
         resolve(module);
     })
 };
+const BalanceDetail = (resolve) => {
+    import('@/view/fragment/MemberManage/BalanceDetail').then((module) => {
+        resolve(module);
+    })
+};
+const FriendInfo = (resolve) => {
+    import('@/view/fragment/MemberManage/FriendInfo').then((module) => {
+        resolve(module);
+    })
+};
+const CardInfo = (resolve) => {
+    import('@/view/fragment/MemberManage/CardInfo').then((module) => {
+        resolve(module);
+    })
+};
+const Repayment = (resolve) => {
+    import('@/view/fragment/MemberManage/Repayment').then((module) => {
+        resolve(module);
+    })
+};
+const QuickTrading = (resolve) => {
+    import('@/view/fragment/MemberManage/QuickTrading').then((module) => {
+        resolve(module);
+    })
+};
+
+// 信创学院
+const ArticalManage = (resolve) => {
+    import('@/view/page/CollegeManage/ArticalManage').then((module) => {
+        resolve(module);
+    })
+};
+const ChangeArtical = (resolve) => {
+    import('@/view/page/CollegeManage/ChangeArtical').then((module) => {
+        resolve(module);
+    })
+};
 
 
 Vue.use(Router);
@@ -151,10 +188,40 @@ export default new Router({
                         path:'fundsdetail',
                         name:'fundsdetail',
                         component:FundsDetail
+                    },{
+                        path:'friendinfo',
+                        name:'friendinfo',
+                        component:FriendInfo
+                    },{
+                        path:'cardinfo',
+                        name:'cardinfo',
+                        component:CardInfo
+                    },{
+                        path:'balancedetail',
+                        name:'balancedetail',
+                        component:BalanceDetail
+                    },{
+                        path:'repayment',
+                        name:'repayment',
+                        component:Repayment
+                    },{
+                        path:'quicktrading',
+                        name:'quicktrading',
+                        component:QuickTrading
                     },]
-                },
-
-            ]
+                },{
+                    path:'articalmanage',
+                    name:'articalmanage',
+                    component:ArticalManage,
+                },{
+                    path:'addartical',
+                    name:'addartical',
+                    component:ChangeArtical,
+                },{
+                    path:'updateartical',
+                    name:'updateartical',
+                    component:ChangeArtical,
+                },]
         },
     ]
 });
