@@ -5,19 +5,12 @@
             <nav-bar @addTab="addTab"></nav-bar>
             <el-main class="main">
                 <div class="content">
-                    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab"
-                             @tab-click="clickTab">
-                        <el-tab-pane
-                            v-for="(item, index) in editableTabs"
-                            :key="item.name"
-                            :label="item.title"
-                            :name="item.name"
-                        >
-                            <!--<keep-alive>-->
-                            <router-view v-if="isRouterAlive"/>
-                            <!--</keep-alive>-->
-                        </el-tab-pane>
-                    </el-tabs>
+                    <div class="index-top" v-if="!topShow">
+                        <el-breadcrumb separator-class="el-icon-arrow-right">
+                            <el-breadcrumb-item :to="{ path: item.path }" v-for="(item,index) in itemList" :key="index">首页</el-breadcrumb-item>
+                        </el-breadcrumb>
+                    </div>
+                    <router-view v-if="isRouterAlive"/>
                 </div>
             </el-main>
         </el-container>
@@ -47,26 +40,16 @@
         data() {
             return {
                 isRouterAlive: true,
-                editableTabsValue: '1',
-                routerIndex: '',
-                editableTabs: [{
-                    title: '首页',
-                    name: '1',
-                    routerPath: 'Welcome'
-                }],
-                tabIndex: 1,
-                tabBarObj: {},
-            }
-        },
-        mounted() {
-            if (this.tabBar.editableTabsValue) {
-                this.editableTabs = this.tabBar.editableTabs;
-                this.editableTabsValue = this.tabBar.editableTabsValue;
-            }
+                itemList:[{
+                    path:'',
 
+                }],
+            }
         },
-        computed: {
-            ...mapGetters(['tabBar'])
+        computed:{
+            topShow(){
+                return this.$route.name == 'Welcome'
+            }
         },
         methods: {
             /**
@@ -81,89 +64,8 @@
                 })
             },
             addTab(targetName, routerPath) {
-                let newTabName = ++this.tabIndex + '';
-                for (let i = 0; i < this.editableTabs.length; i++) {
-                    if(newTabName == this.editableTabs[i].name){
-                        newTabName = newTabName + 1;
-                    }
-                    if (targetName == this.editableTabs[i].title) {
-                        this.editableTabsValue = this.editableTabs[i].name;
-                        return;
-                    }
 
-                }
-
-                this.editableTabs.push({
-                    title: targetName,
-                    name: newTabName,
-                    routerPath: routerPath
-                });
-                this.editableTabsValue = newTabName;
-
-                this.tabBarObj.editableTabsValue = this.editableTabsValue;
-                this.tabBarObj.editableTabs = this.editableTabs;
-                this.setTabBar(this.tabBarObj);
             },
-            removeTab(targetName) {
-
-
-                let tabs = this.editableTabs;
-                let activeName = this.editableTabsValue;
-
-                if (targetName == 1) {
-                    return;
-                }
-
-                if (activeName === targetName) {
-                    tabs.forEach((tab, index) => {
-                        if (tab.name === targetName) {
-                            let nextTab = tabs[index + 1] || tabs[index - 1];
-                            if (nextTab) {
-                                activeName = nextTab.name;
-                            }
-                        }
-                    });
-                }
-
-
-                this.editableTabsValue = activeName;
-                this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-
-                for (let i = 0; i < tabs.length; i++) {
-                    if (this.editableTabsValue == tabs[i].name) {
-                        this.$router.replace({
-                            // name:tabs[i].routerName
-                            path: tabs[i].routerPath
-                        })
-                    }
-                }
-
-                this.tabBarObj.editableTabsValue = this.editableTabsValue;
-                this.tabBarObj.editableTabs = this.editableTabs;
-                this.setTabBar(this.tabBarObj);
-            },
-            clickTab(data) {
-                let tabs = this.editableTabs;
-                let tabsName = data.label;
-                tabs.forEach((tab, index) => {
-                    if (tab.title == tabsName) {
-                        this.$router.replace({
-                            // name:tab.routerName
-                            path: tab.routerPath
-                        })
-                    }
-                });
-
-                console.log('data',data);
-
-
-                this.tabBarObj.editableTabsValue = data.name;
-                this.tabBarObj.editableTabs = this.editableTabs;
-                this.setTabBar(this.tabBarObj);
-            },
-            ...mapActions({
-                setTabBar: StorageService.TabBar.setTabBar,
-            })
         }
 
 
@@ -194,5 +96,10 @@
         bottom: 0;
         overflow: auto;
     }
-
+    .index-top{
+        height: 40px;
+        background: #f5f5f5;
+        color: #AAAAAA;
+        padding: 0 16px;
+    }
 </style>

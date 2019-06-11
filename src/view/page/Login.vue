@@ -162,7 +162,7 @@
                     this.setUser(result.user);
                     this.setToken(result.token);
 
-                    this.$router.replace({name: 'Index'});
+                    this.$router.replace({name: 'Welcome'});
                 } else {
                     this.showError(data.respMsg);
                 }
