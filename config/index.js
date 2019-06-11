@@ -24,15 +24,6 @@ module.exports = {
                     '^/api': ''   //需要rewrite的,
                 }
             },
-            '/userApi': {    //将www.exaple.com印射为/apis
-                // target: 'https://192.168.101.100:8880',  // 机构管理，通道管理
-                target: 'https://192.168.101.100:8882',  // 权限管理
-                secure: false,  // 如果是https接口，需要配置这个参数
-                changeOrigin: true,  //是否跨域
-                pathRewrite: {
-                    '^/userApi': ''   //需要rewrite的,
-                }
-            }
         },
 
         // Various Dev Server settings
