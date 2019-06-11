@@ -12,7 +12,6 @@
                             :key="item.name"
                             :label="item.title"
                             :name="item.name"
-
                         >
                             <!--<keep-alive>-->
                             <router-view v-if="isRouterAlive"/>

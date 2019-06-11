@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Aug 10 2016 11:06:16 GMT+0800 (CST)
+ * build: Wed Dec 26 2018 17:24:52 GMT+0800 (CST)
  */
 
 (function(){
@@ -3935,6 +3935,10 @@ var domUtils = dom.domUtils = {
      * @return { Boolean } 是否是空元素
      */
     isEmptyBlock:function (node,reg) {
+        // HaoChuan9421
+        if(!node){
+            return;
+        }
         if(node.nodeType != 1)
             return 0;
         reg = reg || new RegExp('[ \xa0\t\r\n' + domUtils.fillChar + ']', 'g');
@@ -7890,6 +7894,10 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * ```
          */
         getLang: function (path) {
+            // HaoChuan9421
+            if(!this.options){
+                return '';
+            }
             var lang = UE.I18N[this.options.lang];
             if (!lang) {
                 throw Error("not import language file");
@@ -8054,7 +8062,7 @@ UE.Editor.defaultOptions = function(editor){
         autoClearEmptyNode: true,
         fullscreen: false,
         readonly: false,
-        zIndex: 9999,
+        zIndex: 999,
         imagePopup: true,
         enterTag: 'p',
         customDomain: false,
@@ -8078,12 +8086,13 @@ UE.Editor.defaultOptions = function(editor){
         setTimeout(function(){
             try{
                 me.options.imageUrl && me.setOpt('serverUrl', me.options.imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2'));
+
                 var configUrl = me.getActionUrl('config'),
-                    //isJsonp = utils.isCrossDomainUrl(configUrl);
-                  isJsonp = false;
+                    isJsonp = utils.isCrossDomainUrl(configUrl);
 
                 /* 发出ajax请求 */
                 me._serverConfigLoaded = false;
+
                 configUrl && UE.ajax.request(configUrl,{
                     'method': 'GET',
                     'dataType': isJsonp ? 'jsonp':'',
@@ -8239,7 +8248,6 @@ UE.ajax = function() {
                 }
             }
         };
-        xhr.setRequestHeader('Authorization', sessionStorage.getItem("token") );
         if (method == "POST") {
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send(submitStr);
@@ -8249,6 +8257,7 @@ UE.ajax = function() {
     }
 
     function doJsonp(url, opts) {
+
         var successhandler = opts.onsuccess || function(){},
             scr = document.createElement('SCRIPT'),
             options = opts || {},
@@ -12664,7 +12673,7 @@ UE.plugins['paragraph'] = function() {
                         } );
                     }
                     tmpRange.setEndAfter( tmpNode );
-
+                    
                     para = range.document.createElement( style );
                     if(attrs){
                         domUtils.setAttributes(para,attrs);
@@ -12676,7 +12685,7 @@ UE.plugins['paragraph'] = function() {
                     //需要内容占位
                     if(domUtils.isEmptyNode(para)){
                         domUtils.fillChar(range.document,para);
-
+                        
                     }
 
                     tmpRange.insertNode( para );
@@ -12800,7 +12809,7 @@ UE.plugins['paragraph'] = function() {
 
         },
         doDirectionality = function(range,editor,forward){
-
+            
             var bookmark,
                 filterFn = function( node ) {
                     return   node.nodeType == 1 ? !domUtils.isBookmarkNode(node) : !domUtils.isWhitespace(node);
@@ -17644,7 +17653,7 @@ UE.plugins['video'] = function (){
 
         url = utils.unhtmlForUrl(url);
         align = utils.unhtml(align);
-        classname = utils.unhtml(classname);
+        classname = utils.unhtml(classname).trim();
 
         width = parseInt(width, 10) || 0;
         height = parseInt(height, 10) || 0;
@@ -17764,8 +17773,8 @@ UE.plugins['video'] = function (){
             var html = [],id = 'tmpVedio', cl;
             for(var i=0,vi,len = videoObjs.length;i<len;i++){
                 vi = videoObjs[i];
-                cl = (type == 'upload' ? 'video-js vjs-default-skin':'edui-faked-video');
-                html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'video'));
+                cl = (type == 'upload' ? 'edui-upload-video video-js vjs-default-skin':'edui-faked-video');
+                html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'image'));
             }
             me.execCommand("inserthtml",html.join(""),true);
             var rng = this.selection.getRange();
@@ -22722,7 +22731,7 @@ UE.plugins['formatmatch'] = function(){
      });
 
     function addList(type,evt){
-
+        
         if(browser.webkit){
             var target = evt.target.tagName == 'IMG' ? evt.target : null;
         }
@@ -22788,7 +22797,7 @@ UE.plugins['formatmatch'] = function(){
 
     me.commands['formatmatch'] = {
         execCommand : function( cmdName ) {
-
+          
             if(flag){
                 flag = 0;
                 list = [];
@@ -22797,7 +22806,7 @@ UE.plugins['formatmatch'] = function(){
             }
 
 
-
+              
             var range = me.selection.getRange();
             img = range.getClosedNode();
             if(!img || img.tagName != 'IMG'){
@@ -23186,7 +23195,7 @@ UE.plugins['catchremoteimage'] = function () {
         ajax = UE.ajax;
 
     /* 设置默认值 */
-    if (me.options.catchRemoteImageEnable === undefined) return;
+    if (me.options.catchRemoteImageEnable === false) return;
     me.setOpt({
         catchRemoteImageEnable: false
     });
@@ -23791,8 +23800,10 @@ UE.plugin.register('autoupload', function (){
                 rng.moveToBookmark(bk).select();
             };
         }
-      /* 插入loading的占位符 */
+
+        /* 插入loading的占位符 */
         me.execCommand('inserthtml', loadingHtml);
+
         /* 判断后端配置是否没有加载成功 */
         if (!me.getOpt(filetype + 'ActionName')) {
             errorHandler(me.getLang('autoupload.errorLoadConfig'));
@@ -23951,7 +23962,8 @@ UE.plugin.register('autosave', function (){
     return {
         defaultOptions: {
             //默认间隔时间
-            saveInterval: 500
+            saveInterval: 500,
+            enableAutoSave: true // HaoChuan9421
         },
         bindEvents:{
             'ready':function(){
@@ -23971,6 +23983,10 @@ UE.plugin.register('autosave', function (){
             },
 
             'contentchange': function () {
+                // HaoChuan9421
+                if (!me.getOpt('enableAutoSave')) {
+                    return;
+                }
 
                 if ( !saveKey ) {
                     return;
@@ -24452,247 +24468,136 @@ UE.plugin.register('section', function (){
 // plugins/simpleupload.js
 /**
  * @description
- * 简单上传:点击按钮,直接选择文件上传
- * @author Jinqn
- * @date 2014-03-31
+ * 简单上传:点击按钮,直接选择文件上传。
+ * 原 UEditor 作者使用了 form 表单 + iframe 的方式上传
+ * 但由于同源策略的限制，父页面无法访问跨域的 iframe 内容
+ * 导致无法获取接口返回的数据，使得单图上传无法在跨域的情况下使用
+ * 这里改为普通的XHR上传，兼容到IE10+
+ * @author HaoChuan9421 <hc199421@gmail.com>
+ * @date 2018-12-20
  */
-UE.plugin.register('simpleupload', function (){
-    var me = this,
-        isLoaded = false,
-        containerBtn;
+UE.plugin.register('simpleupload', function() {
+  var me = this,
+    containerBtn,
+    timestrap = (+new Date()).toString(36);
 
-    function initUploadBtn(){
-        var w = containerBtn.offsetWidth || 20,
-            h = containerBtn.offsetHeight || 20,
-            btnIframe = document.createElement('iframe'),
-            btnStyle = 'display:block;width:' + w + 'px;height:' + h + 'px;overflow:hidden;border:0;margin:0;padding:0;position:absolute;top:0;left:0;filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity: 0;opacity: 0;cursor:pointer;';
+  function initUploadBtn() {
+    var w = containerBtn.offsetWidth || 20,
+      h = containerBtn.offsetHeight || 20,
+      btnStyle = 'display:block;width:' + w + 'px;height:' + h + 'px;overflow:hidden;border:0;margin:0;padding:0;position:absolute;top:0;left:0;filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity: 0;opacity: 0;cursor:pointer;';
 
-        domUtils.on(btnIframe, 'load', function(){
+    var form = document.createElement('form');
+    var input = document.createElement('input');
+    form.id = 'edui_form_' + timestrap;
+    form.enctype = 'multipart/form-data';
+    form.style = btnStyle;
+    input.id = 'edui_input_' + timestrap;
+    input.type = 'file'
+    input.accept = 'image/*';
+    input.name = me.options.imageFieldName;
+    input.style = btnStyle;
+    form.appendChild(input);
+    containerBtn.appendChild(form);
 
-            var timestrap = (+new Date()).toString(36),
-                wrapper,
-                btnIframeDoc,
-                btnIframeBody;
+    input.addEventListener('change', function(event) {
+      if (!input.value) return;
+      var loadingId = 'loading_' + (+new Date()).toString(36);
+      var imageActionUrl = me.getActionUrl(me.getOpt('imageActionName'));
+      var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
+      var action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?' : '&') + params);
+      var allowFiles = me.getOpt('imageAllowFiles');
+      me.focus();
+      me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme + '/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
 
-            btnIframeDoc = (btnIframe.contentDocument || btnIframe.contentWindow.document);
-            btnIframeBody = btnIframeDoc.body;
-            wrapper = btnIframeDoc.createElement('div');
-
-            wrapper.innerHTML = '<form id="edui_form_' + timestrap + '" target="edui_iframe_' + timestrap + '" method="POST" enctype="multipart/form-data" action="' + me.getOpt('serverUrl') + '" ' +
-            'style="' + btnStyle + '">' +
-            '<input id="edui_input_' + timestrap + '" type="file" accept="image/*" name="' + me.options.imageFieldName + '" ' +
-            'style="' + btnStyle + '">' +
-            '</form>' +
-            '<iframe id="edui_iframe_' + timestrap + '" name="edui_iframe_' + timestrap + '" style="display:none;width:0;height:0;border:0;margin:0;padding:0;position:absolute;"></iframe>';
-            wrapper.className = 'edui-' + me.options.theme;
-            wrapper.id = me.ui.id + '_iframeupload';
-            btnIframeBody.style.cssText = btnStyle;
-            btnIframeBody.style.width = w + 'px';
-            btnIframeBody.style.height = h + 'px';
-            btnIframeBody.appendChild(wrapper);
-
-            if (btnIframeBody.parentNode) {
-                btnIframeBody.parentNode.style.width = w + 'px';
-                btnIframeBody.parentNode.style.height = w + 'px';
-            }
-
-            var form = btnIframeDoc.getElementById('edui_form_' + timestrap);
-            var input = btnIframeDoc.getElementById('edui_input_' + timestrap);
-            var iframe = btnIframeDoc.getElementById('edui_iframe_' + timestrap);
-
-          /**
-           * 2017-09-07 改掉了ueditor源码，将本身的单文件上传的方法改为ajax上传，主要目的是为了解决跨域的问题
-           * @author Guoqing
-           */
-          domUtils.on(input, 'change', function() {
-              if(!input.value) return;
-              var loadingId = 'loading_' + (+new Date()).toString(36);
-              var imageActionUrl = me.getActionUrl(me.getOpt('imageActionName'));
-              var allowFiles = me.getOpt('imageAllowFiles');
-
-              me.focus();
-              me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
-
-              /!* 判断后端配置是否没有加载成功 *!/
-              if (!me.getOpt('imageActionName')) {
-                errorHandler(me.getLang('autoupload.errorLoadConfig'));
-                return;
-              }
-              // 判断文件格式是否错误
-              var filename = input.value,
-                fileext = filename ? filename.substr(filename.lastIndexOf('.')):'';
-              if (!fileext || (allowFiles && (allowFiles.join('') + '.').indexOf(fileext.toLowerCase() + '.') == -1)) {
-                showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
-                return;
-              }
-
-              var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
-              var action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?' : '&') + params);
-              var formData = new FormData();
-              formData.append("upfile", form[0].files[0] );
-              $.ajax({
-                url: action,
-                type: 'POST',
-                cache: false,
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                  data = JSON.parse(data);
-                  var link, loader,
-                    body = (iframe.contentDocument || iframe.contentWindow.document).body,
-                    result = body.innerText || body.textContent || '';
-                  link = me.options.imageUrlPrefix + data.url;
-
-                  if(data.state == 'SUCCESS' && data.url) {
-                    loader = me.document.getElementById(loadingId);
-                    loader.setAttribute('src', link);
-                    loader.setAttribute('_src', link);
-                    loader.setAttribute('title', data.title || '');
-                    loader.setAttribute('alt', data.original || '');
-                    loader.removeAttribute('id');
-                    domUtils.removeClasses(loader, 'loadingclass');
-                  } else {
-                    showErrorLoader && showErrorLoader(data.state);
-                  }
-                  form.reset();
-                }
-              });
-              function showErrorLoader(title){
-                if(loadingId) {
-                  var loader = me.document.getElementById(loadingId);
-                  loader && domUtils.remove(loader);
-                  me.fireEvent('showmessage', {
-                    'id': loadingId,
-                    'content': title,
-                    'type': 'error',
-                    'timeout': 4000
-                  });
-                }
-              }
-            });
-            /*domUtils.on(input, 'change', function(){
-
-                if(!input.value) return;
-                var loadingId = 'loading_' + (+new Date()).toString(36);
-                var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
-
-                var imageActionUrl = me.getActionUrl(me.getOpt('imageActionName'));
-                var allowFiles = me.getOpt('imageAllowFiles');
-
-                me.focus();
-                me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
-
-                function callback(){
-                    try{
-                        var link, json, loader,
-                            body = (iframe.contentDocument || iframe.contentWindow.document).body,
-                            result = body.innerText || body.textContent || '';
-                        json = (new Function("return " + result))();
-                        link = me.options.imageUrlPrefix + json.url;
-
-                        if(json.state == 'SUCCESS' && json.url) {
-                            loader = me.document.getElementById(loadingId);
-                            loader.setAttribute('src', link);
-                            loader.setAttribute('_src', link);
-                            loader.setAttribute('title', json.title || '');
-                            loader.setAttribute('alt', json.original || '');
-                            loader.removeAttribute('id');
-                            domUtils.removeClasses(loader, 'loadingclass');
-                        } else {
-                            showErrorLoader && showErrorLoader(json.state);
-                        }
-                    }catch(er){
-                        showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
-                    }
-                    form.reset();
-                    domUtils.un(iframe, 'load', callback);
-                }
-                function showErrorLoader(title){
-                    if(loadingId) {
-                        var loader = me.document.getElementById(loadingId);
-                        loader && domUtils.remove(loader);
-                        me.fireEvent('showmessage', {
-                            'id': loadingId,
-                            'content': title,
-                            'type': 'error',
-                            'timeout': 4000
-                        });
-                    }
-                }
-
-                /!* 判断后端配置是否没有加载成功 *!/
-                if (!me.getOpt('imageActionName')) {
-                    errorHandler(me.getLang('autoupload.errorLoadConfig'));
-                    return;
-                }
-                // 判断文件格式是否错误
-                var filename = input.value,
-                    fileext = filename ? filename.substr(filename.lastIndexOf('.')):'';
-                if (!fileext || (allowFiles && (allowFiles.join('') + '.').indexOf(fileext.toLowerCase() + '.') == -1)) {
-                    showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
-                    return;
-                }
-
-                domUtils.on(iframe, 'load', callback);
-                form.action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params);
-                form.submit();
-            });*/
-
-            var stateTimer;
-            me.addListener('selectionchange', function () {
-                clearTimeout(stateTimer);
-                stateTimer = setTimeout(function() {
-                    var state = me.queryCommandState('simpleupload');
-                    if (state == -1) {
-                        input.disabled = 'disabled';
-                    } else {
-                        input.disabled = false;
-                    }
-                }, 400);
-            });
-            isLoaded = true;
-        });
-
-        btnIframe.style.cssText = btnStyle;
-        containerBtn.appendChild(btnIframe);
-    }
-
-    return {
-        bindEvents:{
-            'ready': function() {
-                //设置loading的样式
-                utils.cssRule('loading',
-                    '.loadingclass{display:inline-block;cursor:default;background: url(\''
-                    + this.options.themePath
-                    + this.options.theme +'/images/loading.gif\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;}\n' +
-                    '.loaderrorclass{display:inline-block;cursor:default;background: url(\''
-                    + this.options.themePath
-                    + this.options.theme +'/images/loaderror.png\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;' +
-                    '}',
-                    this.document);
-            },
-            /* 初始化简单上传按钮 */
-            'simpleuploadbtnready': function(type, container) {
-                containerBtn = container;
-                me.afterConfigReady(initUploadBtn);
-            }
-        },
-        outputRule: function(root){
-            utils.each(root.getNodesByTagName('img'),function(n){
-                if (/\b(loaderrorclass)|(bloaderrorclass)\b/.test(n.getAttr('class'))) {
-                    n.parentNode.removeChild(n);
-                }
-            });
-        },
-        commands: {
-            'simpleupload': {
-                queryCommandState: function () {
-                    return isLoaded ? 0:-1;
-                }
-            }
+      function showErrorLoader(title) {
+        if (loadingId) {
+          var loader = me.document.getElementById(loadingId);
+          loader && domUtils.remove(loader);
+          me.fireEvent('showmessage', {
+            'id': loadingId,
+            'content': title,
+            'type': 'error',
+            'timeout': 4000
+          });
         }
+      }
+      /* 判断后端配置是否没有加载成功 */
+      if (!me.getOpt('imageActionName')) {
+        showErrorLoader(me.getLang('autoupload.errorLoadConfig'));
+        return;
+      }
+      // 判断文件格式是否错误
+      var filename = input.value,
+        fileext = filename ? filename.substr(filename.lastIndexOf('.')) : '';
+      if (!fileext || (allowFiles && (allowFiles.join('') + '.').indexOf(fileext.toLowerCase() + '.') == -1)) {
+        showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
+        return;
+      }
+
+      var xhr = new XMLHttpRequest()
+      xhr.open('post', action, true)
+      if (me.options.headers && Object.prototype.toString.apply(me.options.headers) === "[object Object]") {
+        for (var key in me.options.headers) {
+          xhr.setRequestHeader(key, me.options.headers[key])
+        }
+      }
+      xhr.onload = function() {
+        if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+          var res = JSON.parse(xhr.responseText)
+          var link = me.options.imageUrlPrefix + res.url;
+
+          if (res.state == 'SUCCESS' && res.url) {
+            loader = me.document.getElementById(loadingId);
+            loader.setAttribute('src', link);
+            loader.setAttribute('_src', link);
+            loader.setAttribute('title', res.title || '');
+            loader.setAttribute('alt', res.original || '');
+            loader.removeAttribute('id');
+            domUtils.removeClasses(loader, 'loadingclass');
+            me.fireEvent("contentchange");
+          } else {
+            showErrorLoader(res.state);
+          }
+        } else {
+          showErrorLoader(me.getLang('simpleupload.loadError'));
+        }
+      };
+      xhr.onerror = function() {
+        showErrorLoader(me.getLang('simpleupload.loadError'));
+      };
+      xhr.send(new FormData(form));
+      form.reset();
+    })
+  }
+
+  return {
+    bindEvents: {
+      'ready': function() {
+        //设置loading的样式
+        utils.cssRule('loading',
+          '.loadingclass{display:inline-block;cursor:default;background: url(\'' +
+          this.options.themePath +
+          this.options.theme + '/images/loading.gif\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;}\n' +
+          '.loaderrorclass{display:inline-block;cursor:default;background: url(\'' +
+          this.options.themePath +
+          this.options.theme + '/images/loaderror.png\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;' +
+          '}',
+          this.document);
+      },
+      /* 初始化简单上传按钮 */
+      'simpleuploadbtnready': function(type, container) {
+        containerBtn = container;
+        me.afterConfigReady(initUploadBtn);
+      }
+    },
+    outputRule: function(root) {
+      utils.each(root.getNodesByTagName('img'), function(n) {
+        if (/\b(loaderrorclass)|(bloaderrorclass)\b/.test(n.getAttr('class'))) {
+          n.parentNode.removeChild(n);
+        }
+      });
     }
+  }
 });
 
 // plugins/serverparam.js
@@ -25340,7 +25245,7 @@ UE.ui = baidu.editor.ui = {};
         domUtils = baidu.editor.dom.domUtils,
         UIBase = baidu.editor.ui.UIBase,
         uiUtils = baidu.editor.ui.uiUtils;
-
+    
     var Mask = baidu.editor.ui.Mask = function (options){
         this.initOptions(options);
         this.initUIBase();
@@ -25636,7 +25541,7 @@ UE.ui = baidu.editor.ui = {};
         }
     };
     utils.inherits(Popup, UIBase);
-
+    
     domUtils.on( document, 'mousedown', function ( evt ) {
         var el = evt.target || evt.srcElement;
         closeAllPopup( evt,el );
@@ -25732,7 +25637,7 @@ UE.ui = baidu.editor.ui = {};
     var utils = baidu.editor.utils,
         uiUtils = baidu.editor.ui.uiUtils,
         UIBase = baidu.editor.ui.UIBase;
-
+    
     var TablePicker = baidu.editor.ui.TablePicker = function (options){
         this.initOptions(options);
         this.initTablePicker();
@@ -25816,7 +25721,7 @@ UE.ui = baidu.editor.ui = {};
     var browser = baidu.editor.browser,
         domUtils = baidu.editor.dom.domUtils,
         uiUtils = baidu.editor.ui.uiUtils;
-
+    
     var TPL_STATEFUL = 'onmousedown="$$.Stateful_onMouseDown(event, this);"' +
         ' onmouseup="$$.Stateful_onMouseUp(event, this);"' +
         ( browser.ie ? (
@@ -25825,7 +25730,7 @@ UE.ui = baidu.editor.ui = {};
         : (
         ' onmouseover="$$.Stateful_onMouseOver(event, this);"' +
         ' onmouseout="$$.Stateful_onMouseOut(event, this);"' ));
-
+    
     baidu.editor.ui.Stateful = {
         alwalysHoverable: false,
         target:null,//目标元素和this指向dom不一样
@@ -27450,7 +27355,7 @@ UE.ui = baidu.editor.ui = {};
         setValue : function(value){
             this._value = value;
         }
-
+        
     };
     utils.inherits(MenuButton, SplitButton);
 })();
@@ -29063,22 +28968,38 @@ UE.ui = baidu.editor.ui = {};
                 toolbarUis[i] = toolbarUi;
             }
 
-            //接受外部定制的UI
+            //接受外部定制的UI（修复因 utils.each 无法准确的循环出对象的全部元素而导致的自定义 UI 不符合预期的 BUG by HaoChuan9421）
 
-            utils.each(UE._customizeUI,function(obj,key){
+            // utils.each(UE._customizeUI,function(obj,key){
+            //     var itemUI,index;
+            //     if(obj.id && obj.id != editor.key){
+            //        return false;
+            //     }
+            //     itemUI = obj.execFn.call(editor,editor,key);
+            //     if(itemUI){
+            //         index = obj.index;
+            //         if(index === undefined){
+            //             index = toolbarUi.items.length;
+            //         }
+            //         toolbarUi.add(itemUI,index)
+            //     }
+            // });
+
+            
+            for(var key in UE._customizeUI){
+                var obj = UE._customizeUI[key]
                 var itemUI,index;
-                if(obj.id && obj.id != editor.key){
-                   return false;
-                }
-                itemUI = obj.execFn.call(editor,editor,key);
-                if(itemUI){
-                    index = obj.index;
-                    if(index === undefined){
-                        index = toolbarUi.items.length;
+                if(!obj.id || obj.id == editor.key){
+                    itemUI = obj.execFn.call(editor,editor,key);
+                    if(itemUI){
+                        index = obj.index;
+                        if(index === undefined){
+                            index = toolbarUi.items.length;
+                        }
+                        toolbarUi.add(itemUI,index)
                     }
-                    toolbarUi.add(itemUI,index)
                 }
-            });
+            }
 
             this.toolbars = toolbarUis;
         },
@@ -29563,9 +29484,10 @@ UE.registerUI('message', function(editor) {
     me.addListener('ready', function(){
         holder = document.getElementById(me.ui.id + '_message_holder');
         updateHolderPos();
-        setTimeout(function(){
-            updateHolderPos();
-        }, 500);
+        // HaoChuan9421
+        // setTimeout(function(){
+        //     updateHolderPos();
+        // }, 500);
     });
 
     me.addListener('showmessage', function(type, opt){
