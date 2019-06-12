@@ -71,59 +71,14 @@ h1{
     overflow-x: auto;
 }
 
-.common-margin{
-    margin: 30px;
-    box-sizing: border-box;
-}
-
-
-.button-size{
-    width: 100px;
-    height: 40px;
-}
-
-.input-size{
-    width: 200px;
-}
-
-.button-color{
-    color: #FF6600;
-}
-
-.overWidth{
+.common-container{
     width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-x: auto;
 }
-
-.commonTitle{
-    position: relative;
-    font-weight: bold;
+.button-size{
+    width: 120px;
+    height: 40px;
     margin-bottom: 20px;
 }
-
-.commonTitle::before{
-    content: '';
-    position: absolute;
-    left: -20px;
-    top: 0;
-    width: 3px;
-    height: 100%;
-    background: rgba(7, 154, 222, 1);
-}
-
-.formSpan{
-    width: 50px;
-    margin-left: 10px;
-}
-
-.commonMargin{
-    margin-right: 20px;
-}
-.float-left{
-    float: left;
-}
-.float-right{
-    float: right;
-}
-.clearfix:after{display:block;clear:both;content:"";visibility:hidden;height:0}
-.clearfix{zoom:1}
-

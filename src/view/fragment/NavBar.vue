@@ -7,13 +7,10 @@
                 @open="handleOpen"
                 @close="handleClose"
                 :router="true">
-                <el-submenu :index="navs.index" v-for = "(navs,first) in navsBar" :key = "first">
-                    <template slot="title">
-                        <i class="el-icon-location"></i>
-                        <span>{{navs.navName}}</span>
-                    </template>
-                    <el-menu-item :index="nav.index"  v-for = "(nav,second) in navs.navsSecond" :key = "second" @click="goTo(nav.navsSecondName,nav.routerName)">{{nav.navsSecondName}}</el-menu-item>
-                </el-submenu>
+                <el-menu-item :index="nav.index" v-for = "(nav,first) in navsBar" :key = "first"  @click="goTo(nav.navsName,nav.index)">
+                    <i class="el-icon-setting"></i>
+                    <span slot="title">{{nav.navsName}}</span>
+                </el-menu-item>
             </el-menu>
         </div>
     </div>
@@ -32,63 +29,17 @@
         data(){
             return{
                 navsBar:[{
-                    index:'1',
-                    navName:'通道管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/channelmanage',
-                        navsSecondName:'通道管理',
-                        routerName:'channelmanage',
-                    },{
-                        index:'/index/otherrate',
-                        navsSecondName:'其他费率说明',
-                        routerName:'otherrate',
-                    }]
+                    index:'/index/welcome',
+                    navsName:'首页',
+                    routerName:'Welcome',
                 },{
-                    index:'2',
-                    navName:'计划管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/planselect',
-                        navsSecondName:'计划查询',
-                        routerName:'planselect',
-                    },]
+                    index:'/index/activitymanage',
+                    navsName:'活动',
+                    routerName:'ActivityManage',
                 },{
-                    index:'3',
-                    navName:'快捷收款管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/quickcollectionselect',
-                        navsSecondName:'快捷收款查询',
-                        routerName:'quickcollectionselect',
-                    },]
-                },{
-                    index:'4',
-                    navName:'系统管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/billreminder',
-                        navsSecondName:'账单提醒配置',
-                        routerName:'billreminder',
-                    },]
-                },{
-                    index:'5',
-                    navName:'会员管理',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/memberbasicinfo',
-                        navsSecondName:'会员基本信息',
-                        routerName:'memberbasicinfo',
-                    },]
-                },{
-                    index:'6',
-                    navName:'信创学院',
-                    navLogo:'',
-                    navsSecond:[{
-                        index:'/index/articalmanage',
-                        navsSecondName:'文章管理',
-                        routerName:'articalmanage',
-                    },]
+                    index:'/index/goodsservice',
+                    navsName:'商品/服务',
+                    routerName:'GoodsService',
                 }]
             }
         },
@@ -100,8 +51,8 @@
             this.getSelectPerms();
         },
         methods: {
-            goTo(navsSecondName,routerPath){
-                this.$emit('addTab',navsSecondName,routerPath);
+            goTo(navsName,routerPath){
+                this.$emit('addTab',navsName,routerPath);
             },
             handleOpen(key, keyPath) {
                 // console.log(key, keyPath);

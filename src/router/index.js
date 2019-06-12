@@ -19,6 +19,20 @@ const Welcome = (resolve) => {
     })
 };
 
+// 活动
+const ActivityManage = (resolve) => {
+    import('@/view/page/ActivityManage/ActivityManage').then((module) => {
+        resolve(module);
+    })
+};
+
+// 商品/服务
+const GoodsService = (resolve) => {
+    import('@/view/page/GoodsService/GoodsService').then((module) => {
+        resolve(module);
+    })
+};
+
 
 Vue.use(Router);
 export default new Router({
@@ -43,6 +57,14 @@ export default new Router({
                     path:'welcome',
                     name:'Welcome',
                     component:Welcome
+                },{
+                    path:'activitymanage',
+                    name:'ActivityManage',
+                    component:ActivityManage
+                },{
+                    path:'goodsservice',
+                    name:'GoodsService',
+                    component:GoodsService
                 },
             ]
         },

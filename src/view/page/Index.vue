@@ -7,7 +7,8 @@
                 <div class="content">
                     <div class="index-top" v-if="!topShow">
                         <el-breadcrumb separator-class="el-icon-arrow-right">
-                            <el-breadcrumb-item :to="{ path: item.path }" v-for="(item,index) in itemList" :key="index">首页</el-breadcrumb-item>
+                            <el-breadcrumb-item :to="{ path: '/index/welcome' }">首页</el-breadcrumb-item>
+                            <el-breadcrumb-item :to="{ path: item.path }" v-for="(item,index) in itemList" :key="index">{{item.name}}</el-breadcrumb-item>
                         </el-breadcrumb>
                     </div>
                     <router-view v-if="isRouterAlive"/>
@@ -32,20 +33,30 @@
             ElContainer,
             Top, NavBar
         },
+        data() {
+            return {
+                isRouterAlive: true,
+                itemList:[{
+                    name:'',
+                    path:'',
+                }],
+
+            }
+        },
         provide() {
             return {
                 reload: this.reload
             }
         },
-        data() {
-            return {
-                isRouterAlive: true,
-                itemList:[{
-                    path:'',
-
-                }],
-            }
-        },
+        // watch:{
+        //     $route(to,from){
+        //         // console.log(to,from)
+        //         this.itemList.push({
+        //             path : to.fullPath,
+        //             name:''
+        //         })
+        //     }
+        // },
         computed:{
             topShow(){
                 return this.$route.name == 'Welcome'
@@ -64,7 +75,8 @@
                 })
             },
             addTab(targetName, routerPath) {
-
+                this.itemList[0].path = routerPath;
+                this.itemList[0].name = targetName;
             },
         }
 
@@ -83,7 +95,7 @@
 
     .main {
         flex: 1;
-        background: #f9f9f9;
+        background: #ffffff;
         overflow: hidden;
         position: relative;
     }
@@ -101,5 +113,6 @@
         background: #f5f5f5;
         color: #AAAAAA;
         padding: 0 16px;
+        border-bottom: 1px solid #DDDDDD;
     }
 </style>

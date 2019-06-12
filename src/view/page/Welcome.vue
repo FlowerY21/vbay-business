@@ -40,7 +40,7 @@
                 </div>
             </el-col>
         </el-row>
-        <el-card class="box-card">
+        <el-card class="box-card box-card2">
             <div>
                 <p>最新消息</p>
                 <div class="flex-row vertical-center around-justify">
@@ -109,9 +109,17 @@
     }
     .box-card{
         position: relative;
+        margin-bottom: 20px;
     }
     .card-inner-box {
         padding-top: 25px;
         padding-bottom: 25px;
+    }
+    .box-card2 .card-inner-box{
+        border-right: 1px solid #dddddd;
+        width: 20%;
+    }
+    .box-card2 .card-inner-box:last-child{
+        border: none;
     }
 </style>
