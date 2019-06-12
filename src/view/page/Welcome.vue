@@ -1,23 +1,76 @@
 <template>
-    <div class="flex-row absolute-center welcome">
-        <div class="flex-row vertical-center flow-justify">
-            <el-card class="box-card">
-                <div>
-                    <p>账户余额</p>
-                    <div class="flex-row vertical-center around-justify">
-                        <div class="flex-col vertical-center border-right">
-                            <p class="big-text">84066.00</p>
-                            <p class="small-text">AUD</p>
+    <div class="welcome">
+        <el-row :gutter="20">
+            <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                <div class="grid-content">
+                    <el-card class="box-card">
+                        <div>
+                            <p>账户余额</p>
+                            <div class="flex-row vertical-center around-justify border-right">
+                                <div class="flex-col vertical-center card-inner-box">
+                                    <p class="big-text">84066.00</p>
+                                    <p class="small-text">AUD</p>
+                                </div>
+                                <div class="flex-col vertical-center card-inner-box">
+                                    <p class="big-text">84066.00</p>
+                                    <p class="small-text">AUD</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex-col vertical-center">
-                            <p class="big-text">84066.00</p>
-                            <p class="small-text">AUD</p>
+                    </el-card>
+                </div>
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                <div class="grid-content">
+                    <el-card class="box-card">
+                        <div>
+                            <p>今日收入</p>
+                            <div class="flex-row vertical-center around-justify border-right">
+                                <div class="flex-col vertical-center card-inner-box">
+                                    <p class="big-text">84066.00</p>
+                                    <p class="small-text">AUD</p>
+                                </div>
+                                <div class="flex-col vertical-center card-inner-box">
+                                    <p class="big-text">84066.00</p>
+                                    <p class="small-text">AUD</p>
+                                </div>
+                            </div>
                         </div>
+                    </el-card>
+                </div>
+            </el-col>
+        </el-row>
+        <el-card class="box-card">
+            <div>
+                <p>最新消息</p>
+                <div class="flex-row vertical-center around-justify">
+                    <div class="flex-col vertical-center card-inner-box">
+                        <p class="big-text">3</p>
+                        <p class="small-text">顾客评论</p>
+                    </div>
+                    <div class="flex-col vertical-center card-inner-box">
+                        <p class="big-text">5</p>
+                        <p class="small-text">会员消息</p>
+                    </div>
+                    <div class="flex-col vertical-center card-inner-box">
+                        <p class="big-text">5</p>
+                        <p class="small-text">申请预订</p>
+                    </div>
+                    <div class="flex-col vertical-center card-inner-box">
+                        <p class="big-text">5</p>
+                        <p class="small-text">申请入会</p>
+                    </div>
+                    <div class="flex-col vertical-center card-inner-box">
+                        <p class="big-text">5</p>
+                        <p class="small-text">今日新增会员</p>
+                    </div>
+                    <div class="flex-col vertical-center card-inner-box">
+                        <p class="big-text">5</p>
+                        <p class="small-text">今日新增顾客</p>
                     </div>
                 </div>
-            </el-card>
-        </div>
-
+            </div>
+        </el-card>
     </div>
 </template>
 
@@ -28,18 +81,37 @@
 </script>
 
 <style scoped>
-    .welcome{
-       margin-top: 10vh;
+    .welcome {
+        padding: 20px;
     }
-    .big-text{
+
+    .big-text {
         font-size: 36px;
         color: #00b2b2;
     }
-    .small-text{
+
+    .small-text {
         font-size: 16px;
         color: #666666;
     }
     .border-right{
-        border-right: 1px solid #666666;
+        position: relative;
+    }
+    .border-right::after {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 100%;
+        background: #DDDDDD;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+    .box-card{
+        position: relative;
+    }
+    .card-inner-box {
+        padding-top: 25px;
+        padding-bottom: 25px;
     }
 </style>
