@@ -73,3 +73,24 @@
     height: 178px;
     display: block;
 }
+
+
+/*颜色修改*/
+el-checkbox__inner:hover{
+    border-color: #00b2b2;
+}
+.el-button--primary,
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background-color: #00b2b2;
+    border-color: #00b2b2;
+}
+.el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
+    background-color: rgba(0, 178, 178, 0.5);
+    border-color: rgba(0, 178, 178, 0.5);
+}
+.el-button--text{
+    color: #00b2b2;
+}
+.el-checkbox__input.is-checked+.el-checkbox__label{
+    color: #00b2b2;
+}
