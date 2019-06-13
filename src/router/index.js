@@ -25,6 +25,11 @@ const ActivityManage = (resolve) => {
         resolve(module);
     })
 };
+const ChangeActivity = (resolve) => {
+    import('@/view/page/ActivityManage/ChangeActivity').then((module) => {
+        resolve(module);
+    })
+};
 
 // 商品/服务
 const GoodsService = (resolve) => {
@@ -62,6 +67,16 @@ export default new Router({
                     name:'ActivityManage',
                     component:ActivityManage
                 },{
+                    path:'addActivity',
+                    name:'addActivity',
+                    component:ChangeActivity
+                },{
+                    path:'updateactivity/:id',
+                    name:'updateactivity',
+                    component:ChangeActivity
+                },
+
+                {
                     path:'goodsservice',
                     name:'GoodsService',
                     component:GoodsService

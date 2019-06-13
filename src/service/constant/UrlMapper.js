@@ -3,8 +3,11 @@ const UserApi = {
     Login: "/login",    // 用户登录
 };
 
+const ActivityApi = {
+    List: "/business/activity/list",
+};
 
 
 
 
-export {UserApi};
+export {UserApi,ActivityApi};

@@ -7,19 +7,17 @@
                 </el-form-item>
                 <el-button type="primary" @click="search()">搜索</el-button>
             </el-form>
-            <el-button type="primary" @click="search()" class="button-size">新建</el-button>
+            <el-button type="primary" @click="add()" class="button-size">新建</el-button>
         </div>
         <div class="flex-row flow-justify vertical-center">
             <div class="flex-row vertical-center">
                 <div class="flex-row vertical-center text-button on" @click="textButton(0)">
                     <p>创建时间</p>
-                    <img src="" alt="">
+                    <img src="../../assets/images/order.png" alt="orderIcon" class="order-icon">
                 </div>
                 <div class="flex-row vertical-center text-button">
                     <p>活动时间</p>
-                    <img src="" alt="">
                 </div>
-
             </div>
             <el-button @click="BatchDelete()" class="button-size">批量删除</el-button>
         </div>
@@ -49,6 +47,9 @@
             BatchDelete(){
 
             },
+            add(){
+                this.$emit('add')
+            }
         }
     }
 </script>
@@ -59,14 +60,21 @@
         padding: 20px;
         padding-bottom: 0;
         box-sizing: border-box;
+        margin-bottom: 20px;
     }
     .text-button{
         margin-right: 25px;
     }
     .text-button{
         font-size: 16px;
+        line-height: 16px;
     }
     .on p{
         color: #00b2b2;
+    }
+    .order-icon{
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
     }
 </style>

@@ -1,6 +1,8 @@
 <template>
     <div>
-        <el-table :class="'commonTable'" :data="data" :row-class-name="tableRowClassName" :show-summary="showSummary" :summary-method="getSummaries" style="width: 100%" >
+        <el-table :class="'commonTable'" :data="data" tooltip-effect="dark"
+                  @selection-change="handleSelectionChange"
+                  :show-summary="showSummary" :summary-method="getSummaries" style="width: 100%" >
             <slot></slot>
         </el-table>
         <el-pagination
@@ -25,7 +27,11 @@
         props:{
             data:{
                 type:Array,
-                // default:[]
+                default:[]
+            },
+            multipleSelection:{
+                type:Array,
+                default:[]
             },
             showSummary:{
                 type:Boolean,
@@ -46,13 +52,17 @@
             }
         },
         methods: {
-            tableRowClassName({row, rowIndex}) {
-                if (rowIndex % 2 == 1) {
-                    return 'colorOne';
-                } else if (rowIndex % 2 == 0) {
-                    return 'colorTwo';
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
                 }
-                return '';
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
             },
             handleSizeChange(val) {
                 // console.log(`每页 ${val} 条`);
